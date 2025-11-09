@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Banana Math - Home</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+</head>
+
+<body>
+    <div id="login-screen">
+        <div class="split-container">
+
+            <!-- Left box -->
+            <div class="welcome-box">
+                <img src="assets/duck.jpg" class="banana-logo" alt="Banana Logo">
+                <h2>Welcome to</h2>
+                <h1>🍌 Banana Math 🍌</h1>
+                <p>Your Brain’s Playground!</p>
+            </div>
+
+            <!-- Right box (Home) -->
+            <div class="login-box home" id="right-box">
+                <h1>Home</h1>
+                <p class="user-email" id="userEmail">Loading...</p>
+
+                <div class="home-buttons">
+                    <a href="howtoplay.html" class="btn gold">How to Play 📘</a>
+                    <a href="game.html" class="btn gold">Start Game 🎮</a>
+                    <a href="leaderboard.html" class="btn outline">Leaderboard 🏆</a>
+                    <a href="#" id="logoutBtn" class="btn outline">Logout ➡️</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBQ9Bkuo3T_e-e8hVk1d1ZlWU1BavNK_WI",
+            authDomain: "banana-game-f6bde.firebaseapp.com",
+            projectId: "banana-game-f6bde",
+            storageBucket: "banana-game-f6bde.appspot.com",
+            messagingSenderId: "648784611095",
+            appId: "1:648784611095:web:af9e1fac76a96efb169952"
+        };
+
+        // Initialize firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Swal toast setup
+        const Toast = Swal.mixin({
+            toast: true,
+            position: "top",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true
+        });
+
+        const userEmailElement = document.getElementById("userEmail");
+        const logoutBtn = document.getElementById("logoutBtn");
+
+        // Show toast from previous page
+        const toastData = JSON.parse(localStorage.getItem("toast"));
+        if (toastData) {
+            Toast.fire({ icon: toastData.icon, title: toastData.title });
+            localStorage.removeItem("toast");
+        }
+
+        // Auth check
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                const name = user.email.split("@")[0];
+                const displayName = name.charAt(0).toUpperCase() + name.slice(1);
+                userEmailElement.textContent = `Hey, ${displayName}`;
+            } else {
+                window.location.href = "index.html";
+            }
+        });
+
+        // Logout
+        logoutBtn.addEventListener("click", async (e) => {
+            e.preventDefault();
+
+            // Sign out first
+            await signOut(auth);
+
+            // Save toast data
+            localStorage.setItem(
+            "toast",
+            JSON.stringify({ icon: "success", title: "Logged out successfully!" })
+            );
+
+            // Redirect after sign out
+            window.location.href = "index.html";
+        });
+    </script>
+</body>
+</html>
