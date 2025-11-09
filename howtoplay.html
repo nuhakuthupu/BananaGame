@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>How to Play</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="howto-container">
+        <div id="howto-box">
+            <h2>How to Play???</h2>
+
+            <div class="rules">
+                <p>Each <b>Banana</b>🍌 represents a hidden number.</p>
+                <p>Use the math clues to figure out each Banana’s value.</p>
+                <p>You’ll get <b>5 puzzles</b> per round, and a <b>100-second timer</b>🕐.</p>
+                <p>A wrong answer or timeout will <b>end the game</b> — be careful!</p>
+                <p>Solve all puzzles as fast as you can to reach the top of the <b>Leaderboard</b>🏆!</p>
+            </div>
+
+
+            <div class="home-buttons-row">
+                <button id="leaderboardBtn" class="secondary-btn">View Leaderboard</button>
+                <button id="startGameBtn">Start Game</button>
+                
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("startGameBtn").onclick = () => {
+            window.location.href = "game.html";
+        };
+
+        document.getElementById("leaderboardBtn").onclick = () => {
+            window.location.href = "leaderboard.html";
+        };
+    </script>
+
+</body>
+</html>
+
