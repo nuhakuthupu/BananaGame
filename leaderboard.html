@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="leaderboard-box">
+        <h2>🏆 Top Players</h2>
+        <div id="board">Loading...</div>
+        
+        <div class="leader-nav">
+            <a href="home.html" id="homeBtn" class="btn outline">Home 🏠</a>
+            <a href="game.html" class="btn gold">Play Game 🎮</a>
+        </div>
+    </div>
+
+    <script type="module">
+        import { auth, db } from "./firebase.js";
+        import { collection, query, orderBy, limit, getDocs } 
+        from "https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js";
+
+        function capitalizeFirst(str) {
+            if (!str) return "";
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        async function loadBoard() {
+            const user = await new Promise(resolve => {
+                const unsub = auth.onAuthStateChanged(u => {
+                    unsub();
+                    resolve(u);
+                });
+            });
+
+            const q = query(collection(db, "leaderboard"), orderBy("score", "asc"), limit(10));
+            const snap = await getDocs(q);
+
+            if (snap.empty) {
+                document.getElementById("board").innerHTML = "<p>No scores yet.</p>";
+                return;
+            }
+
+            let html = "<ol>";
+            snap.forEach(doc => {
+                const d = doc.data();
+                const playerName = capitalizeFirst(d.name);
+                const isMe = user && d.uid === user.uid;
+                html += `<li class="${isMe ? "me" : ""}">
+                            ${playerName} — <b>${d.score}s</b>
+                            ${isMe ? " ⭐" : "" }
+                        </li>`;
+            });
+            html += "</ol>";
+
+            document.getElementById("board").innerHTML = html;
+        }
+
+    loadBoard();
+
+    document.getElementById("homeBtn").addEventListener("click", () => {
+        window.location.href = "home.html";
+    });
+    </script>
+</body>
+</html>
