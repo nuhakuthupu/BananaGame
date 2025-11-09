@@ -5,7 +5,7 @@
     <title>Banana Math</title>
     <link rel="stylesheet" href="style.css">
 
-    <!-- Firebase -->
+    <!-- Firebase & SweetAlert -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore.js"></script>
@@ -19,8 +19,8 @@
         <div class="logo-half right"></div>
     </div>
 
-    <!-- Login / home screen -->
-    <div id="login-screen">
+    <!-- Login screen -->
+    <div id="login-screen" class="hidden">
         <div class="split-container">
             
             <!-- Left box -->
@@ -33,10 +33,20 @@
 
             <!-- Right box -->
             <div class="login-box" id="right-box">
+                <h2>Login</h2>
+                <input type="email" id="email" placeholder="Email" autocomplete="off">
+                <input type="password" id="password" placeholder="Password" autocomplete="off">
+                <button id="loginBtn">Login</button>
+                <button id="registerBtn" class="secondary">Register</button>
+                <button id="googleBtn" class="google">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg"
+                        style="width:20px;margin-right:8px;vertical-align:middle;">
+                        Login with Google
+                </button>
             </div>
         </div>
     </div>
 
-<script type="module" src="main.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>
